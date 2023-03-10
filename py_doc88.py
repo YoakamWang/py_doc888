@@ -1,6 +1,8 @@
 from selenium import webdriver
 import os
 import time
+
+from selenium.common.exceptions import NoAlertPresentException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -8,7 +10,7 @@ from selenium.webdriver.chrome.options import Options
 from lxml import etree
 
 chromeOptions = webdriver.ChromeOptions()
-#browser=webdriver.Chrome(executable_path=r"C:\sources\chromedriver_win32\chromedriver.exe")
+# browser=webdriver.Chrome(executable_path=r"C:\sources\chromedriver_win32\chromedriver.exe")
 path = os.getcwd() + '\data'
 options = Options()
 # 判断文件夹是否存在，不存在创建文件夹
@@ -16,10 +18,11 @@ is_exists = os.path.exists(path)
 if not is_exists:
     os.mkdir(path)
 
-# 指定浏览器下载文件夹
-prefs = {"download.default_directory": path}
+# 指定浏览器下载文件夹 #"download.default_directory": path 下载文件存的路径，，，
+# "profile.default_content_setting_values.automatic_downloads":1设置下载多个文件，免得弹出框在下载过程中出现    牛牛牛
+prefs = {"download.default_directory": path, "profile.default_content_setting_values.automatic_downloads": 1}
 options.add_experimental_option("prefs", prefs)
-browser = webdriver.Chrome(chrome_options=options,executable_path=r"C:\sources\chromedriver_win32\chromedriver.exe")
+browser = webdriver.Chrome(chrome_options=options, executable_path=r"C:\sources\chromedriver_win32\chromedriver.exe")
 # 指定网页链接
 
 
@@ -38,7 +41,7 @@ print(EC.visibility_of_element_located((By.XPATH, "//div[@id='continueButton']")
 # #等待网页加载
 time.sleep(10)
 # 等待按钮
-element = WebDriverWait(browser, 20).until(EC.visibility_of_element_located((By.XPATH, "//div[@id='continueButton']")))
+element = WebDriverWait(browser, 30).until(EC.visibility_of_element_located((By.XPATH, "//div[@id='continueButton']")))
 element.click()
 
 # browser.find_element_by_xpath("//div[@id='continueButton']").click()
@@ -78,3 +81,9 @@ while k <= page_num:
             }
         };
         """ + a)
+        # try:
+        #     if EC.alert_is_present():
+        #         print("1111")
+        #         browser.switch_to.alert.accept()
+        # except NoAlertPresentException:
+        #     continue
