@@ -9,7 +9,7 @@ def img_pdf():
     files = os.listdir(filepath)
     # print(files)
     # 排序，防止合并后文件页面乱序
-    with open("./name.txt", "r") as fb:
+    with open("./name.txt", "r",encoding='utf-8') as fb:
         name = fb.readline()
         print(name)
     filedict = {int(i.split('.')[0].split('_')[1]): i for i in files if i.endswith(".png")}

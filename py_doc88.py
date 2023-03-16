@@ -25,6 +25,10 @@ def main(url):
     # "profile.default_content_setting_values.automatic_downloads":1设置下载多个文件，免得弹出框在下载过程中出现    牛牛牛
     prefs = {"download.default_directory": path, "profile.default_content_setting_values.automatic_downloads": 1}
     options.add_experimental_option("prefs", prefs)
+    options.add_argument('--ignore-ssl-error')
+    options.add_argument('---ignore-certificate-errors-spki-list')
+    options.add_argument('--ignore-ssl-errors')
+    options.add_argument('log-level=2')
     browser = webdriver.Chrome(chrome_options=options,
                                executable_path=r"C:\sources\chromedriver_win32\chromedriver.exe")
     # 指定网页链接
@@ -41,7 +45,7 @@ def main(url):
     page_num = int(page_num.replace('/ ', ''))
     print(f'共{page_num}页')
     h1_text = html.xpath("//h1/text()")[1].strip()
-    with open("./name.txt",'w') as f:
+    with open("./name.txt",'w',encoding='utf-8') as f:
         f.write(h1_text)
     # print(EC.visibility_of_element_located((By.XPATH, "//div[@id='continueButton']")))
     # #等待网页加载
